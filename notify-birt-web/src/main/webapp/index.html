@@ -1,0 +1,17 @@
+<h2><a href="startBirt.jnlp">Start Birt</a></h2>
+</br>
+
+<script src="https://www.java.com/js/deployJava.js"></script>
+<a href="javascript:deployJava.launchWebStartApplication('startBirt.jnlp');">Start Birt</a>
+</br>
+<script>   
+    deployJava.launchButtonPNG='res/intro-eclipse.png';
+    var jnlpFile = "startBirt.jnlp";
+    deployJava.createWebStartLaunchButtonEx(jnlpFile);
+</script>
+</br>
+<script>
+    deployJava.launchButtonPNG='res/intro-eclipse.png';
+    var url = "startBirt.jnlp";
+    deployJava.createWebStartLaunchButton(url, '1.6.0');
+</script>

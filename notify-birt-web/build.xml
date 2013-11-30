@@ -1,0 +1,70 @@
+<project default="repack-and-sign">
+    <target name="repack-and-sign">
+        <repack-and-sign rootdir="src/main/webapp/plugins/" 
+                         keystore.alias="com.engagepoint" 
+                         keystore.file="src/main/resources/keystore.jks" 
+                         keystore.password="123456" />
+    </target>
+    <target name="repack">
+        <repack rootdir="src/main/webapp/plugins/" />
+    </target>
+    <target name="sign">
+        <sign rootdir="src/main/webapp/plugins/" 
+                         keystore.alias="com.engagepoint" 
+                         keystore.file="src/main/resources/keystore.jks" 
+                         keystore.password="123456" />
+    </target>
+    
+    <macrodef name="repack-and-sign">
+        <attribute name ="rootdir"/>
+        <attribute name ="keystore.alias"/>
+        <attribute name ="keystore.file"/>
+        <attribute name ="keystore.password"/>
+
+        <sequential>
+            <echo message="Repacking libs in @{rootdir}"/>
+            <apply executable="pack200" parallel="false">
+                <arg value="--repack"/>
+                <fileset dir="@{rootdir}" includes="**/*.jar" />
+            </apply>
+
+            <echo message="Signing libs in @{rootdir}"/>
+            <signjar 
+                alias="@{keystore.alias}" keystore="@{keystore.file}" storepass="@{keystore.password}" keypass="@{keystore.password}"
+                lazy="true">
+                <path>
+                    <fileset dir="@{rootdir}" includes="**/*.jar" />
+                </path>
+            </signjar>
+        </sequential>
+    </macrodef>
+    
+    <macrodef name="repack">
+        <attribute name ="rootdir"/>
+
+        <sequential>
+            <echo message="Repacking libs in @{rootdir}"/>
+            <apply executable="pack200" parallel="false">
+                <arg value="--repack"/>
+                <fileset dir="@{rootdir}" includes="**/*.jar" />
+            </apply>
+        </sequential>
+    </macrodef>
+    <macrodef name="sign">
+        <attribute name ="rootdir"/>
+        <attribute name ="keystore.alias"/>
+        <attribute name ="keystore.file"/>
+        <attribute name ="keystore.password"/>
+
+        <sequential>
+            <echo message="Signing libs in @{rootdir}"/>
+            <signjar 
+                alias="@{keystore.alias}" keystore="@{keystore.file}" storepass="@{keystore.password}" keypass="@{keystore.password}"
+                lazy="true">
+                <path>
+                    <fileset dir="@{rootdir}" includes="**/*.jar" />
+                </path>
+            </signjar>
+        </sequential>
+    </macrodef>
+</project>
